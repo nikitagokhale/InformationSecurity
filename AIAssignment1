@@ -1,0 +1,61 @@
+import java.util.*;
+
+public class Assignment1
+{ 
+	class graphNode
+	{
+		LinkedList<Integer> edges = new LinkedList<Integer>();
+		int vertex;
+	}
+	ArrayList<Integer> result = new ArrayList<Integer>();
+	LinkedList<graphNode> graph = new LinkedList<graphNode>();
+	PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+	Stack<Integer> stack = new Stack<Integer>();
+	int noVertices, noEdges;
+	
+	void createObj()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter the no of vertices:- ");
+		noVertices = sc.nextInt();
+		for(int i=0;i<noVertices;i++)
+		{
+			graphNode temp = new graphNode();
+			System.out.print("\nEnter the vertex:- ");
+			temp.vertex = sc.nextInt();
+			System.out.print("Enter the no of adjacent edges:- ");
+			noEdges = sc.nextInt();
+			System.out.println("Enter the edges adjacent to vertex " + temp.vertex + ":- ");
+			for(int j=0;j<noEdges;j++)
+			{
+				System.out.print(">");
+				temp.edges.add(sc.nextInt());
+			}
+			graph.add(temp);
+		}
+		sc.close();
+	}
+	
+	void display()
+	{
+		for(int i=0;i<noVertices;i++)
+		{
+			graphNode temp = graph.get(i);
+			System.out.print(temp.vertex);
+			for(int j=0;j<noEdges;j++)
+			{
+				System.out.print(" --> " + temp.edges.get(j));
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		Assignment1 obj = new Assignment1();
+		obj.createObj();
+		System.out.println("Displaying the graph:- ");
+		obj.display();
+		
+	}
+}
