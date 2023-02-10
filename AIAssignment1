@@ -40,12 +40,9 @@ public class Assignment1
 	{
 		for(int i=0;i<noVertices;i++)
 		{
-			graphNode temp = graph.get(i);
-			System.out.print(temp.vertex);
-			for(int j=0;j<noEdges;j++)
-			{
-				System.out.print(" --> " + temp.edges.get(j));
-			}
+			System.out.print(graph.get(i).vertex);
+			for(int j=0;j<graph.get(i).edges.size();j++)
+				System.out.print(" --> " + graph.get(i).edges.get(j));
 			System.out.println();
 		}
 	}
