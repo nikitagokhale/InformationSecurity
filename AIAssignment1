@@ -11,7 +11,7 @@ public class Assignment1
 	LinkedList<graphNode> graph = new LinkedList<graphNode>();
 	PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
 	Stack<Integer> stack = new Stack<Integer>();
-	int noVertices, noEdges;
+	int noVertices;
 	
 	void createObj()
 	{
@@ -24,8 +24,9 @@ public class Assignment1
 			System.out.print("\nEnter the vertex:- ");
 			temp.vertex = sc.nextInt();
 			System.out.print("Enter the no of adjacent edges:- ");
-			noEdges = sc.nextInt();
-			System.out.println("Enter the edges adjacent to vertex " + temp.vertex + ":- ");
+			int noEdges = sc.nextInt();
+			if(noEdges != 0)
+				System.out.println("Enter the edges adjacent to vertex " + temp.vertex + ":- ");
 			for(int j=0;j<noEdges;j++)
 			{
 				System.out.print(">");
@@ -47,12 +48,35 @@ public class Assignment1
 		}
 	}
 	
+	void BFS()
+	{
+		queue.add(graph.get(0).vertex);
+		while(queue.peek() != null)
+		{
+			int currVertex = queue.remove();
+			result.add(currVertex);
+			int index = searchGraph(currVertex);
+			for(int i=0;i)
+		}
+	}
+	
+	int searchGraph(int currVertex)
+	{
+		for(int i=0;i<noVertices;i++)
+		{
+			if(graph.get(i).vertex == currVertex)
+				return i;
+		}
+		return -1;
+	}
+	
 	public static void main(String[] args)
 	{
 		Assignment1 obj = new Assignment1();
 		obj.createObj();
-		System.out.println("Displaying the graph:- ");
+		System.out.println("\nDisplaying the graph:- ");
 		obj.display();
-		
+		System.out.println("\nBFS traversal:- ");
+		obj.BFS();
 	}
 }
