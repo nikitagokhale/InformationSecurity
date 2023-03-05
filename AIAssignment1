@@ -7,9 +7,8 @@ public class Assignment1
 		LinkedList<Integer> edges = new LinkedList<Integer>();
 		int vertex;
 	}
-	ArrayList<Integer> result = new ArrayList<Integer>();
 	LinkedList<graphNode> graph = new LinkedList<graphNode>();
-	PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+	ArrayList<Integer> queue = new ArrayList<Integer>();
 	Stack<Integer> stack = new Stack<Integer>();
 	int noVertices;
 	
@@ -50,30 +49,75 @@ public class Assignment1
 	
 	void BFS()
 	{
+		ArrayList<Integer> result_visited = new ArrayList<Integer>();
 		queue.add(graph.get(0).vertex);
-		while(queue.peek() != null)
+		while(!queue.isEmpty())
 		{
-			int currVertex = queue.remove();
-			result.add(currVertex);
-			int index = searchGraph(currVertex);
-			graphNode temp = graph.get(index);
+			int currVertex = queue.remove(0);
+			if(!result_visited.contains(currVertex))
+				result_visited.add(currVertex);
+			else
+				continue;
+			graphNode temp = searchGraph(currVertex);
 			for(int i=0;i<temp.edges.size();i++)
 			{
-				if(!result.contains(temp.edges.get(i)))
+				if(!result_visited.contains(temp.edges.get(i)))
 					queue.add(temp.edges.get(i));
 			}
 		}
-		System.out.print(result);
+		System.out.print(result_visited);
 	}
 	
-	int searchGraph(int currVertex)
+	graphNode searchGraph(int currVertex)
 	{
+		graphNode temp = new graphNode();
 		for(int i=0;i<noVertices;i++)
 		{
 			if(graph.get(i).vertex == currVertex)
-				return i;
+				return graph.get(i);
 		}
-		return -1;
+		return temp;
+	}
+	
+	void DFS()
+	{
+		System.out.println("Hello");
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		stack.push(graph.get(0).vertex);
+		visited.add(graph.get(0).vertex);
+		System.out.println(result + " " + stack + " h1");
+		while(!stack.empty())
+		{
+			int currVertex = stack.peek();
+			graphNode temp = searchGraph(currVertex);
+			int i=0;
+			System.out.println(result + " " + stack + " h2");
+			while(!temp.edges.isEmpty())
+			{
+				if(!visited.contains(temp.edges.get(0)))
+				{
+					stack.push(temp.edges.get(0));
+					temp.edges.remove(0);
+					System.out.println(result + " h3");
+					break;
+				}
+				else
+				{
+					System.out.println(result + " h4");
+					temp.edges.remove(0);
+				}
+				
+				if(temp.edges.isEmpty())
+					result.add(stack.pop());
+
+				System.out.println(result + " h5");
+			}
+			System.out.println(result + " " + stack + " h6");
+		}
+
+		System.out.println(result + " h7");
+		System.out.println(result);
 	}
 	
 	public static void main(String[] args)
@@ -84,5 +128,7 @@ public class Assignment1
 		obj.display();
 		System.out.println("\nBFS traversal:- ");
 		obj.BFS();
+		System.out.println("\nDFS traversal:- ");
+		obj.DFS();
 	}
 }
