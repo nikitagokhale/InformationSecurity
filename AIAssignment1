@@ -1,31 +1,30 @@
 import java.util.*;
 
 public class Assignment1
-{ 
+{
+	ArrayList<graphNode> graph = new ArrayList<graphNode>();
+	
+	
 	class graphNode
 	{
-		LinkedList<Integer> edges = new LinkedList<Integer>();
 		int vertex;
+		ArrayList<Integer> edges = new ArrayList<Integer>();
 	}
-	LinkedList<graphNode> graph = new LinkedList<graphNode>();
-	ArrayList<Integer> queue = new ArrayList<Integer>();
-	Stack<Integer> stack = new Stack<Integer>();
-	int noVertices;
 	
-	void createObj()
+	void createGraph()
 	{
+		int noVertices;
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter the no of vertices:- ");
+		System.out.print("Enter the no. of vertices:- ");
 		noVertices = sc.nextInt();
 		for(int i=0;i<noVertices;i++)
 		{
 			graphNode temp = new graphNode();
 			System.out.print("\nEnter the vertex:- ");
 			temp.vertex = sc.nextInt();
-			System.out.print("Enter the no of adjacent edges:- ");
+			System.out.print("Enter the no. of edges adjacent to vertex " + temp.vertex + ":-");
 			int noEdges = sc.nextInt();
-			if(noEdges != 0)
-				System.out.println("Enter the edges adjacent to vertex " + temp.vertex + ":- ");
+			System.out.println("Enter the edges:- ");
 			for(int j=0;j<noEdges;j++)
 			{
 				System.out.print(">");
@@ -36,9 +35,10 @@ public class Assignment1
 		sc.close();
 	}
 	
-	void display()
+	void printGraph()
 	{
-		for(int i=0;i<noVertices;i++)
+		System.out.println("\nPrinting the graph...");
+		for(int i=0;i<graph.size();i++)
 		{
 			System.out.print(graph.get(i).vertex);
 			for(int j=0;j<graph.get(i).edges.size();j++)
@@ -49,86 +49,73 @@ public class Assignment1
 	
 	void BFS()
 	{
-		ArrayList<Integer> result_visited = new ArrayList<Integer>();
+		System.out.println("\nBFS traversal...");
+		ArrayList<Integer> queue = new ArrayList<Integer>();
+		ArrayList<Integer> result = new ArrayList<Integer>();
 		queue.add(graph.get(0).vertex);
 		while(!queue.isEmpty())
 		{
 			int currVertex = queue.remove(0);
-			if(!result_visited.contains(currVertex))
-				result_visited.add(currVertex);
-			else
-				continue;
+			result.add(currVertex);
 			graphNode temp = searchGraph(currVertex);
-			for(int i=0;i<temp.edges.size();i++)
+			for(int j=0;j<temp.edges.size();j++)
 			{
-				if(!result_visited.contains(temp.edges.get(i)))
-					queue.add(temp.edges.get(i));
+				if(!result.contains(temp.edges.get(j)) && !queue.contains(temp.edges.get(j)))
+					queue.add(temp.edges.get(j));
 			}
 		}
-		System.out.print(result_visited);
+		System.out.print(result);
+	}
+	
+	void DFS()
+	{
+		System.out.println("\n\nDFS traversal...");
+		Stack<Integer> stack = new Stack<Integer>();
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		stack.push(graph.get(0).vertex);
+		result.add(graph.get(0).vertex);
+		while(!stack.empty())
+		{
+			int currVertex = stack.peek();
+			graphNode temp = searchGraph(currVertex);
+			boolean backtracking = true;
+			for(int j=0;j<temp.edges.size();j++)
+			{
+				if(!stack.contains(temp.edges.get(j)) && !result.contains(temp.edges.get(j)))
+				{
+					stack.push(temp.edges.get(j));
+					result.add(stack.peek());
+					backtracking = false;
+					break;
+				}
+			}
+			
+			if(backtracking)
+				stack.pop();
+		}
+		System.out.println(result);
 	}
 	
 	graphNode searchGraph(int currVertex)
 	{
 		graphNode temp = new graphNode();
-		for(int i=0;i<noVertices;i++)
+		for(int i=0;i<graph.size();i++)
 		{
 			if(graph.get(i).vertex == currVertex)
-				return graph.get(i);
+			{
+				temp = graph.get(i);
+				break;
+			}
 		}
 		return temp;
-	}
-	
-	void DFS()
-	{
-		System.out.println("Hello");
-		ArrayList<Integer> visited = new ArrayList<Integer>();
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		stack.push(graph.get(0).vertex);
-		visited.add(graph.get(0).vertex);
-		System.out.println(result + " " + stack + " h1");
-		while(!stack.empty())
-		{
-			int currVertex = stack.peek();
-			graphNode temp = searchGraph(currVertex);
-			int i=0;
-			System.out.println(result + " " + stack + " h2");
-			while(!temp.edges.isEmpty())
-			{
-				if(!visited.contains(temp.edges.get(0)))
-				{
-					stack.push(temp.edges.get(0));
-					temp.edges.remove(0);
-					System.out.println(result + " h3");
-					break;
-				}
-				else
-				{
-					System.out.println(result + " h4");
-					temp.edges.remove(0);
-				}
-				
-				if(temp.edges.isEmpty())
-					result.add(stack.pop());
-
-				System.out.println(result + " h5");
-			}
-			System.out.println(result + " " + stack + " h6");
-		}
-
-		System.out.println(result + " h7");
-		System.out.println(result);
 	}
 	
 	public static void main(String[] args)
 	{
 		Assignment1 obj = new Assignment1();
-		obj.createObj();
-		System.out.println("\nDisplaying the graph:- ");
-		obj.display();
-		System.out.println("\nBFS traversal:- ");
+		obj.createGraph();
+		obj.printGraph();
 		obj.BFS();
-		System.out.println("\nDFS traversal:- ");
 		obj.DFS();
 	}
 }
